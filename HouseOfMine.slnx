@@ -1,0 +1,8 @@
+<Solution>
+  <Folder Name="/src/">
+    <Project Path="HouseOfMine.Application/HouseOfMine.Application.csproj" />
+    <Project Path="HouseOfMine.Domain/HouseOfMine.Domain.csproj" />
+    <Project Path="HouseOfMine.Infrastructure/HouseOfMine.Infrastructure.csproj" />
+    <Project Path="HouseOfMine.Web/HouseOfMine.Web.csproj" Id="afa78f96-c074-4605-a935-fd33529402fb" />
+  </Folder>
+</Solution>
