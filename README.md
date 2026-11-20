@@ -116,7 +116,7 @@ Key constraints enforced in the database:
 ### Run it
 
 ```bash
-git clone https://github.com/YOUR_USERNAME/HouseOfMine.git
+git clone https://github.com/elahesabtinia/HouseOfMine.git
 cd HouseOfMine
 dotnet run --project HouseOfMine.Web
 ```
