@@ -1,31 +1,446 @@
+:root {
+    --brand: #0f766e;
+    --brand-dark: #115e59;
+    --brand-soft: #e6f4f1;
+    --ink: #1f2937;
+    --muted: #6b7280;
+    --surface: #ffffff;
+    --page: #f4f7f8;
+    --line: #e5eaee;
+    --radius: 16px;
+    --shadow: 0 6px 24px rgba(15, 118, 110, 0.08);
+    --bs-primary: #0f766e;
+    --bs-primary-rgb: 15, 118, 110;
+    --bs-link-color: #0f766e;
+    --bs-link-hover-color: #115e59;
+    --bs-body-font-family: "Vazirmatn", Tahoma, "Segoe UI", sans-serif;
+    --bs-body-color: var(--ink);
+}
+
 html {
-  font-size: 14px;
-}
-
-@media (min-width: 768px) {
-  html {
-    font-size: 16px;
-  }
-}
-
-.btn:focus, .btn:active:focus, .btn-link.nav-link:focus, .form-control:focus, .form-check-input:focus {
-  box-shadow: 0 0 0 0.1rem white, 0 0 0 0.25rem #258cfb;
-}
-
-html {
-  position: relative;
-  min-height: 100%;
+    font-size: 15px;
 }
 
 body {
-  margin-bottom: 60px;
+    font-family: var(--bs-body-font-family);
+    background: var(--page);
+    color: var(--ink);
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
 }
 
-.form-floating > .form-control-plaintext::placeholder, .form-floating > .form-control::placeholder {
-  color: var(--bs-secondary-color);
-  text-align: end;
+main {
+    flex: 1;
 }
 
-.form-floating > .form-control-plaintext:focus::placeholder, .form-floating > .form-control:focus::placeholder {
-  text-align: start;
+/* ---------- دکمه‌ها ---------- */
+.btn {
+    border-radius: 12px;
+    padding: .55rem 1.2rem;
+    font-weight: 500;
+}
+
+.btn-primary {
+    --bs-btn-bg: var(--brand);
+    --bs-btn-border-color: var(--brand);
+    --bs-btn-hover-bg: var(--brand-dark);
+    --bs-btn-hover-border-color: var(--brand-dark);
+    --bs-btn-active-bg: var(--brand-dark);
+    --bs-btn-active-border-color: var(--brand-dark);
+    --bs-btn-focus-shadow-rgb: 15, 118, 110;
+}
+
+.btn-outline-secondary {
+    --bs-btn-color: var(--muted);
+    --bs-btn-border-color: var(--line);
+    --bs-btn-hover-bg: var(--brand-soft);
+    --bs-btn-hover-color: var(--brand-dark);
+    --bs-btn-hover-border-color: var(--brand-soft);
+}
+
+/* ---------- فرم‌ها ---------- */
+.form-control, .form-select {
+    border-radius: 12px;
+    border: 1px solid var(--line);
+    padding: .65rem .9rem;
+    background: #fbfdfd;
+}
+
+    .form-control:focus, .form-select:focus {
+        border-color: var(--brand);
+        box-shadow: 0 0 0 .2rem rgba(15, 118, 110, .15);
+        background: #fff;
+    }
+
+.form-label {
+    font-weight: 500;
+    color: var(--ink);
+}
+
+/* ---------- نوار بالا ---------- */
+.site-nav {
+    background: rgba(255, 255, 255, .92);
+    backdrop-filter: blur(8px);
+    border-bottom: 1px solid var(--line);
+    padding: .7rem 0;
+}
+
+.site-brand {
+    display: inline-flex;
+    align-items: center;
+    gap: .6rem;
+    font-weight: 700;
+    font-size: 1.25rem;
+    color: var(--brand-dark);
+    text-decoration: none;
+}
+
+.brand-mark {
+    width: 38px;
+    height: 38px;
+    border-radius: 12px;
+    background: linear-gradient(135deg, var(--brand), #14a39a);
+    color: #fff;
+    display: inline-grid;
+    place-items: center;
+    font-size: 1.15rem;
+}
+
+.site-nav .nav-link {
+    color: var(--muted);
+    font-weight: 500;
+    border-radius: 10px;
+    padding: .45rem .9rem;
+}
+
+    .site-nav .nav-link:hover {
+        color: var(--brand-dark);
+        background: var(--brand-soft);
+    }
+
+/* ---------- بخش خوشامد ---------- */
+.hero {
+    background: linear-gradient(135deg, var(--brand-dark), var(--brand) 55%, #14a39a);
+    color: #fff;
+    border-radius: 24px;
+    padding: 2rem 2rem 1.6rem;
+    box-shadow: var(--shadow);
+    position: relative;
+    overflow: hidden;
+}
+
+    .hero::after {
+        content: "";
+        position: absolute;
+        inset-inline-start: -60px;
+        top: -60px;
+        width: 220px;
+        height: 220px;
+        border-radius: 50%;
+        background: rgba(255, 255, 255, .08);
+    }
+
+    .hero h1 {
+        font-size: 1.7rem;
+        font-weight: 700;
+        margin-bottom: .3rem;
+    }
+
+    .hero p {
+        opacity: .9;
+        margin-bottom: 0;
+    }
+
+.stat-box {
+    background: rgba(255, 255, 255, .14);
+    border-radius: 14px;
+    padding: .8rem 1.1rem;
+    min-width: 130px;
+}
+
+    .stat-box .num {
+        font-size: 1.6rem;
+        font-weight: 700;
+        line-height: 1.2;
+    }
+
+    .stat-box .lbl {
+        font-size: .85rem;
+        opacity: .9;
+    }
+
+/* ---------- عنوان بخش‌ها ---------- */
+.section-title {
+    display: flex;
+    align-items: center;
+    gap: .6rem;
+    font-size: 1.25rem;
+    font-weight: 700;
+    margin: 2.2rem 0 1rem;
+}
+
+    .section-title i {
+        color: var(--brand);
+    }
+
+/* ---------- کارت ملک ---------- */
+.property-card {
+    background: var(--surface);
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+    padding: 1.3rem;
+    height: 100%;
+    transition: transform .15s ease, box-shadow .15s ease;
+}
+
+    .property-card:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 12px 30px rgba(15, 118, 110, .14);
+    }
+
+.property-icon {
+    width: 48px;
+    height: 48px;
+    border-radius: 14px;
+    background: var(--brand-soft);
+    color: var(--brand);
+    display: grid;
+    place-items: center;
+    font-size: 1.4rem;
+    flex-shrink: 0;
+}
+
+.property-title {
+    font-weight: 700;
+    margin: 0;
+}
+
+.property-sub {
+    color: var(--muted);
+    font-size: .88rem;
+}
+
+.property-meta {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: .6rem 1rem;
+    margin: 1rem 0;
+    font-size: .9rem;
+}
+
+    .property-meta .k {
+        color: var(--muted);
+        display: block;
+        font-size: .8rem;
+    }
+
+.property-address {
+    font-size: .92rem;
+    color: var(--ink);
+}
+
+/* ---------- نشانگر سهم دانگ ---------- */
+.dong-meter {
+    display: flex;
+    align-items: center;
+    gap: .6rem;
+    padding-top: .9rem;
+    border-top: 1px dashed var(--line);
+}
+
+.dong-pips {
+    display: flex;
+    gap: 4px;
+}
+
+.pip {
+    width: 22px;
+    height: 10px;
+    border-radius: 4px;
+    background: #dfe7ea;
+}
+
+    .pip.filled {
+        background: linear-gradient(90deg, var(--brand), #14a39a);
+    }
+
+.dong-label {
+    font-size: .85rem;
+    color: var(--muted);
+}
+
+    .dong-label strong {
+        color: var(--brand-dark);
+    }
+
+/* ---------- حالت خالی ---------- */
+.empty-state {
+    background: var(--surface);
+    border: 1px dashed #c7d3d9;
+    border-radius: var(--radius);
+    text-align: center;
+    padding: 2.5rem 1rem;
+    color: var(--muted);
+}
+
+    .empty-state i {
+        font-size: 2.4rem;
+        color: #9fb4bc;
+        display: block;
+        margin-bottom: .6rem;
+    }
+
+/* ---------- کارت فرم ---------- */
+.panel {
+    background: var(--surface);
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+    padding: 1.6rem;
+}
+
+.help-box {
+    background: var(--brand-soft);
+    border-radius: var(--radius);
+    padding: 1.3rem;
+    color: var(--brand-dark);
+    height: 100%;
+}
+
+    .help-box i {
+        font-size: 1.6rem;
+    }
+
+/* ---------- جدول درخواست‌ها ---------- */
+.table-wrap {
+    background: var(--surface);
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+    overflow: hidden;
+}
+
+    .table-wrap .table {
+        margin: 0;
+    }
+
+    .table-wrap thead th {
+        background: #f0f5f6;
+        color: var(--muted);
+        font-weight: 600;
+        font-size: .85rem;
+        border: 0;
+        padding: .9rem 1rem;
+    }
+
+    .table-wrap td {
+        padding: .9rem 1rem;
+        vertical-align: middle;
+        border-color: var(--line);
+    }
+
+.status-badge {
+    display: inline-block;
+    padding: .25rem .75rem;
+    border-radius: 999px;
+    font-size: .8rem;
+    font-weight: 600;
+}
+
+.status-pending {
+    background: #fff4d6;
+    color: #8a5a00;
+}
+
+.status-review {
+    background: #dff0ff;
+    color: #0b5394;
+}
+
+.status-resolved {
+    background: #dcf5e6;
+    color: #146c3a;
+}
+
+.status-rejected {
+    background: #fde2e2;
+    color: #a12a2a;
+}
+
+/* ---------- صفحه‌های ورود و ثبت‌نام ---------- */
+.auth-wrap {
+    max-width: 460px;
+    margin: 2.5rem auto;
+}
+
+.auth-card {
+    background: var(--surface);
+    border: 1px solid var(--line);
+    border-radius: 22px;
+    box-shadow: var(--shadow);
+    padding: 2rem 1.8rem;
+}
+
+.auth-head {
+    text-align: center;
+    margin-bottom: 1.5rem;
+}
+
+    .auth-head .brand-mark {
+        width: 56px;
+        height: 56px;
+        font-size: 1.6rem;
+        border-radius: 16px;
+        margin-bottom: .8rem;
+    }
+
+    .auth-head h2 {
+        font-size: 1.4rem;
+        font-weight: 700;
+        margin-bottom: .25rem;
+    }
+
+    .auth-head p {
+        color: var(--muted);
+        margin: 0;
+        font-size: .92rem;
+    }
+
+.auth-switch {
+    text-align: center;
+    margin-top: 1.2rem;
+    color: var(--muted);
+    font-size: .92rem;
+}
+
+/* ---------- پاورقی ---------- */
+.site-footer {
+    padding: 1.4rem 0;
+    color: var(--muted);
+    font-size: .88rem;
+    text-align: center;
+}
+
+/* ---------- فونت و ارقام در فیلدهای عددی ---------- */
+input[inputmode="numeric"] {
+    direction: ltr;
+    text-align: right;
+    letter-spacing: .05em;
+}
+
+@media (max-width: 576px) {
+    .hero {
+        padding: 1.4rem 1.2rem;
+    }
+
+        .hero h1 {
+            font-size: 1.35rem;
+        }
+
+    .stat-box {
+        min-width: 0;
+        flex: 1;
+    }
 }

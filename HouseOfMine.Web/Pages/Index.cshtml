@@ -1,10 +1,186 @@
 ﻿@page
+@using HouseOfMine.Domain.Enums
 @model IndexModel
 @{
-    ViewData["Title"] = "Home page";
+    ViewData["Title"] = "املاک من";
 }
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://learn.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+@functions {
+    static string StatusText(DisputeStatus s) => s switch
+    {
+        DisputeStatus.Pending => "در انتظار بررسی",
+        DisputeStatus.InReview => "در حال بررسی",
+        DisputeStatus.Resolved => "اصلاح شد",
+        DisputeStatus.Rejected => "رد شد",
+        _ => ""
+    };
+
+    static string StatusClass(DisputeStatus s) => s switch
+    {
+        DisputeStatus.Pending => "status-pending",
+        DisputeStatus.InReview => "status-review",
+        DisputeStatus.Resolved => "status-resolved",
+        DisputeStatus.Rejected => "status-rejected",
+        _ => ""
+    };
+
+    static string TypeIcon(string type) => type switch
+    {
+        "آپارتمان" => "bi-building",
+        "زمین" => "bi-tree",
+        "مغازه" => "bi-shop",
+        _ => "bi-house-door"
+    };
+}
+
+@if (!string.IsNullOrEmpty(Model.Message))
+{
+    <div class="alert alert-success d-flex align-items-center gap-2 border-0 rounded-4">
+        <i class="bi bi-check-circle-fill"></i>
+        <span>@Model.Message</span>
+    </div>
+}
+
+<section class="hero">
+    <h1>املاک من</h1>
+    <p>فهرست املاک ثبت‌شده به نام شما و میزان سهم هر ملک</p>
+
+    <div class="d-flex flex-wrap gap-3 mt-4">
+        <div class="stat-box">
+            <div class="num">@Model.Properties.Count</div>
+            <div class="lbl">ملک ثبت‌شده</div>
+        </div>
+        <div class="stat-box">
+            <div class="num">@Model.Properties.Sum(p => p.AreaSquareMeters).ToString("0.##")</div>
+            <div class="lbl">مجموع مساحت (متر مربع)</div>
+        </div>
+        <div class="stat-box">
+            <div class="num">@Model.Disputes.Count(d => d.Status == DisputeStatus.Pending || d.Status == DisputeStatus.InReview)</div>
+            <div class="lbl">درخواست در جریان</div>
+        </div>
+    </div>
+</section>
+
+<div class="section-title"><i class="bi bi-houses"></i> فهرست املاک</div>
+
+@if (Model.Properties.Count == 0)
+{
+    <div class="empty-state">
+        <i class="bi bi-inbox"></i>
+        ملکی به نام شما ثبت نشده است.<br />
+        اگر فکر می‌کنید ملکی باید در فهرست باشد، از فرم پایین درخواست اصلاح ثبت کنید.
+    </div>
+}
+else
+{
+    <div class="row g-3">
+        @foreach (var p in Model.Properties)
+        {
+            <div class="col-md-6">
+                <article class="property-card">
+                    <div class="d-flex align-items-center gap-3">
+                        <div class="property-icon"><i class="bi @TypeIcon(p.PropertyType)"></i></div>
+                        <div>
+                            <h3 class="property-title fs-6">@p.PropertyType</h3>
+                            <div class="property-sub">@p.Province، @p.City</div>
+                        </div>
+                    </div>
+
+                    <div class="property-meta">
+                        <div><span class="k">پلاک ثبتی</span>@p.RegistrationNumber</div>
+                        <div><span class="k">مساحت</span>@p.AreaSquareMeters.ToString("0.##") متر مربع</div>
+                        <div><span class="k">کد پستی</span>@p.PostalCode</div>
+                    </div>
+
+                    <div class="property-address mb-3"><i class="bi bi-geo-alt text-muted ms-1"></i>@p.Address</div>
+
+                    <div class="dong-meter">
+                        <div class="dong-pips" aria-hidden="true">
+                            @for (int i = 1; i <= 6; i++)
+                            {
+                                <span class="pip @(i <= p.ShareDong ? "filled" : "")"></span>
+                            }
+                        </div>
+                        <div class="dong-label">سهم شما: <strong>@p.ShareDong دانگ</strong> از ۶</div>
+                    </div>
+                </article>
+            </div>
+        }
+    </div>
+}
+
+<div class="section-title"><i class="bi bi-pencil-square"></i> درخواست اصلاح</div>
+
+<div class="row g-3">
+    <div class="col-lg-7">
+        <div class="panel">
+            <form method="post">
+                <div asp-validation-summary="All" class="text-danger small mb-2"></div>
+
+                <div class="mb-3">
+                    <label asp-for="Input.PropertyId" class="form-label"></label>
+                    <select asp-for="Input.PropertyId" class="form-select">
+                        <option value="">ملک در فهرست نیست / مورد دیگر</option>
+                        @foreach (var p in Model.Properties)
+                        {
+                            <option value="@p.PropertyId">پلاک @p.RegistrationNumber - @p.Address</option>
+                        }
+                    </select>
+                </div>
+
+                <div class="mb-3">
+                    <label asp-for="Input.Description" class="form-label"></label>
+                    <textarea asp-for="Input.Description" class="form-control" rows="4" placeholder="مشکل را به‌طور خلاصه توضیح دهید..."></textarea>
+                    <span asp-validation-for="Input.Description" class="text-danger small"></span>
+                </div>
+
+                <button type="submit" class="btn btn-primary"><i class="bi bi-send ms-1"></i>ثبت درخواست</button>
+            </form>
+        </div>
+    </div>
+
+    <div class="col-lg-5">
+        <div class="help-box">
+            <i class="bi bi-headset"></i>
+            <h3 class="fs-6 fw-bold mt-2">چه زمانی درخواست ثبت کنم؟</h3>
+            <p class="mb-0 small">
+                اگر ملکی به نام شما است ولی در فهرست نیست، یا مشخصات و سهم یکی از املاک اشتباه ثبت شده،
+                درخواست خود را بنویسید. پشتیبانی آن را بررسی و اصلاح می‌کند و وضعیتش را در جدول زیر می‌بینید.
+            </p>
+        </div>
+    </div>
 </div>
+
+@if (Model.Disputes.Count > 0)
+{
+    <div class="section-title"><i class="bi bi-clock-history"></i> درخواست‌های قبلی من</div>
+    <div class="table-wrap">
+        <div class="table-responsive">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>پلاک ملک</th>
+                        <th>توضیحات</th>
+                        <th>وضعیت</th>
+                        <th>تاریخ</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var d in Model.Disputes)
+                    {
+                        <tr>
+                            <td>@(d.PropertyRegistrationNumber ?? "-")</td>
+                            <td>@d.Description</td>
+                            <td><span class="status-badge @StatusClass(d.Status)">@StatusText(d.Status)</span></td>
+                            <td class="text-muted small">@d.CreatedAtUtc.ToLocalTime().ToString("yyyy/MM/dd HH:mm")</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+}
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}
